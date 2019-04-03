@@ -243,6 +243,35 @@ void bgp_attr_evpn_na_flag(struct attr *attr, uint8_t *router_flag)
 	}
 }
 
+/*
+ * Fetch and return tunnel type if present.
+ */
+bool bgp_attr_extcom_tunnel_type(struct attr *attr, uint16_t *tunnel_type)
+{
+	struct ecommunity *ecom;
+	int i;
+
+	ecom = attr->ecommunity;
+	if (!ecom || !ecom->size)
+		return false;
+
+	for (i = 0; i < ecom->size; i++) {
+		uint8_t *pnt;
+		uint8_t type, sub_type;
+
+		pnt = (ecom->val + (i * ECOMMUNITY_SIZE));
+		type = pnt[0];
+		sub_type = pnt[1];
+		if (!(type == ECOMMUNITY_ENCODE_OPAQUE &&
+		      sub_type == ECOMMUNITY_OPAQUE_SUBTYPE_ENCAP))
+			continue;
+		*tunnel_type = ((pnt[6] << 8) | pnt[7]);
+		return true;
+	}
+
+	return false;
+}
+
 /* dst prefix must be AF_INET or AF_INET6 prefix, to forge EVPN prefix */
 extern int bgp_build_evpn_prefix(int evpn_type, uint32_t eth_tag,
 				 struct prefix *dst)

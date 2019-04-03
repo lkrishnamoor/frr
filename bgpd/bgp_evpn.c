@@ -5800,6 +5800,14 @@ void bgp_evpn_flood_control_change(struct bgp *bgp)
 		hash_iterate(bgp->vnihash, delete_withdraw_type3, bgp);
 }
 
+bool is_evpn_tunnel_type_vxlan(afi_t afi, safi_t safi, uint16_t tunnel_type)
+{
+	if (afi == AFI_L2VPN && safi == SAFI_EVPN &&
+	    tunnel_type == BGP_ENCAP_TYPE_VXLAN)
+		return true;
+	return false;
+}
+
 /*
  * Cleanup EVPN information on disable - Need to delete and withdraw
  * EVPN routes from peers.

@@ -1946,6 +1946,9 @@ bgp_attr_ext_communities(struct bgp_attr_parser_args *args)
 	/* Extract the Rmac, if any */
 	bgp_attr_rmac(attr, &attr->rmac);
 
+	/* Get the tunnel type from encap extended community */
+	(void) bgp_attr_extcom_tunnel_type(attr, &attr->encap_tunneltype);
+
 	return BGP_ATTR_PARSE_PROCEED;
 }
 

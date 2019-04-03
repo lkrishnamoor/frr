@@ -146,6 +146,8 @@ extern int bgp_evpn_local_es_add(struct bgp *bgp, esi_t *esi,
 extern int bgp_evpn_local_es_del(struct bgp *bgp, esi_t *esi,
 				 struct ipaddr *originator_ip);
 extern void bgp_evpn_flood_control_change(struct bgp *bgp);
+extern bool is_evpn_tunnel_type_vxlan(afi_t afi, safi_t safi,
+				       uint16_t tunnel_type);
 extern void bgp_evpn_cleanup_on_disable(struct bgp *bgp);
 extern void bgp_evpn_cleanup(struct bgp *bgp);
 extern void bgp_evpn_init(struct bgp *bgp);

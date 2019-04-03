@@ -810,6 +810,7 @@ static route_map_result_t route_match_vni(void *rule,
 					  route_map_object_t type, void *object)
 {
 	vni_t vni = 0;
+	unsigned int label_cnt = 0;
 	struct bgp_path_info *path = NULL;
 
 	if (type == RMAP_BGP) {
@@ -819,8 +820,11 @@ static route_map_result_t route_match_vni(void *rule,
 		if (path->extra == NULL)
 			return RMAP_NOMATCH;
 
-		if (vni == label2vni(&path->extra->label[0]))
-			return RMAP_MATCH;
+		for ( ; label_cnt < BGP_MAX_LABELS &&
+			label_cnt < path->extra->num_labels; label_cnt++) {
+			if (vni == label2vni(&path->extra->label[label_cnt]))
+				return RMAP_MATCH;
+		}
 	}
 
 	return RMAP_NOMATCH;

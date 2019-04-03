@@ -66,5 +66,6 @@ extern uint32_t bgp_attr_mac_mobility_seqnum(struct attr *attr,
 extern uint8_t bgp_attr_default_gw(struct attr *attr);
 
 extern void bgp_attr_evpn_na_flag(struct attr *attr, uint8_t *router_flag);
-
+extern bool bgp_attr_extcom_tunnel_type(struct attr *attr,
+					 uint16_t *tunnel_type);
 #endif /* _QUAGGA_BGP_ATTR_EVPN_H */
